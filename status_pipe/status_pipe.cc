@@ -4,7 +4,7 @@
 #include <chrono>
 #include <cmath>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <cstdio>
 #include <io.h>
 #include <fcntl.h>
@@ -54,7 +54,7 @@ void status_thread() {
 }
 
 int main() {
-#ifdef WIN32
+#ifdef _WIN32
     _setmode(fileno(stdout), O_BINARY);
     _setmode(fileno(stdin), O_BINARY);
     std::setvbuf(stdin, stdin_buffer, _IOFBF, io_buffer_size);

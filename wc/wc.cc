@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cctype>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
@@ -11,7 +11,7 @@ char stdin_buffer[4096];
 #endif
 
 int main() {
-#ifdef WIN32
+#ifdef _WIN32
     _setmode(fileno(stdin), O_BINARY);
     std::setvbuf(stdin, stdin_buffer, _IOFBF, io_buffer_size);
 #endif

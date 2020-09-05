@@ -2,7 +2,7 @@
 #include <random>
 #include <string>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
@@ -71,7 +71,7 @@ void usage() {
 }
 
 int main(int argc, char* argv[]) {    
-#ifdef WIN32
+#ifdef _WIN32
     _setmode(fileno(stdout), O_BINARY);
     std::setvbuf(stdout, stdout_buffer, _IOFBF, io_buffer_size);
 #endif
