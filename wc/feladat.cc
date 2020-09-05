@@ -1,12 +1,15 @@
 #include <iostream>
 #include <random>
 #include <string>
+
+#ifdef WIN32
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
 
 const size_t io_buffer_size = 4096;
 char stdout_buffer[4096];
+#endif
 
 std::string program;
 std::default_random_engine rnds(0);
@@ -68,8 +71,10 @@ void usage() {
 }
 
 int main(int argc, char* argv[]) {    
+#ifdef WIN32
     _setmode(fileno(stdout), O_BINARY);
     std::setvbuf(stdout, stdout_buffer, _IOFBF, io_buffer_size);
+#endif
 
     program = argv[0];
 

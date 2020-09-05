@@ -1,15 +1,18 @@
-#include <cstdio>
 #include <iostream>
-#include <io.h>
-#include <fcntl.h>
 #include <mutex>
 #include <thread>
 #include <chrono>
 #include <cmath>
 
+#ifdef WIN32
+#include <cstdio>
+#include <io.h>
+#include <fcntl.h>
+
 const size_t io_buffer_size = 4096;
 char stdout_buffer[4096];
 char stdin_buffer[4096];
+#endif
 
 class moving_average {
  public:
@@ -51,10 +54,12 @@ void status_thread() {
 }
 
 int main() {
+#ifdef WIN32
     _setmode(fileno(stdout), O_BINARY);
     _setmode(fileno(stdin), O_BINARY);
     std::setvbuf(stdin, stdin_buffer, _IOFBF, io_buffer_size);
     std::setvbuf(stdout, stdout_buffer, _IOFBF, io_buffer_size);
+#endif
 
     std::thread szamolo(status_thread);
 
