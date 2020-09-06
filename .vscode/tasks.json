@@ -20,6 +20,30 @@
 				"$msCompile"
 			],
 			"group": "build"
+		},
+		{
+			"type": "shell",
+			"label": "C/C++: cl.exe build with md5.cc",
+			"command": "cl.exe",
+			"args": [
+				"/O2",
+				"/Zi",
+				"/EHsc",
+				"/Fe:",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"${file}",
+				"${fileDirname}\\md5.cc",
+				"/link",
+				"advapi32.lib"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
 		}
+
 	]
 }
