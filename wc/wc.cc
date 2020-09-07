@@ -1,15 +1,15 @@
-#include <iostream>
-#include <cctype>
-#include <cstdio>
-
 #ifdef _WIN32
 #include <io.h>
 #include <fcntl.h>
 #endif
 
+#include <iostream>
+#include <cctype>
+#include <cstdio>
+
 int main() {
 #ifdef _WIN32
-    _setmode(fileno(stdin), O_BINARY);
+    _setmode(fileno(stdin), _O_BINARY);
 #endif
 
     int nl = 0, nw = 0, nc = 0;

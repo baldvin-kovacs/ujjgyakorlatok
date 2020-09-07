@@ -1,14 +1,14 @@
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
+
 #include <iostream>
 #include <mutex>
 #include <thread>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
-
-#ifdef _WIN32
-#include <io.h>
-#include <fcntl.h>
-#endif
 
 using std::chrono::high_resolution_clock;
 
@@ -39,9 +39,10 @@ void print_status(bool force) {
 
 int main() {
 #ifdef _WIN32
-    _setmode(fileno(stdout), O_BINARY);
-    _setmode(fileno(stdin), O_BINARY);
+    _setmode(fileno(stdout), _O_BINARY);
+    _setmode(fileno(stdin), _O_BINARY);
 #endif
+
     std::setvbuf(stdout, stdout_buffer, _IOFBF, sizeof stdout_buffer);
 
     std::cin.tie(nullptr);
