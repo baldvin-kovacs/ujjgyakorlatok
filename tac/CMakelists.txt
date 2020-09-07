@@ -1,0 +1,16 @@
+add_executable(tac
+  tac.cc
+)
+
+add_executable(tac_with_buf
+  tac_with_buf.cc
+)
+
+add_executable(feladat
+  feladat.cc
+)
+
+install(
+  TARGETS tac tac_with_buf feladat
+  RUNTIME DESTINATION tac
+)

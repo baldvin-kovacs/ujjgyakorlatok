@@ -7,6 +7,7 @@ set(CMAKE_INSTALL_PREFIX "M:/prg/${PROJECT_NAME}")
 add_subdirectory(status_pipe)
 add_subdirectory(wc)
 add_subdirectory(md5sum)
+add_subdirectory(tac)
 
 install(TARGETS status_pipe
   RUNTIME DESTINATION bin
