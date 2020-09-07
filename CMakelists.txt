@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.18)
+
+project(ujjgyakorlatok LANGUAGES CXX)
+
+set(CMAKE_INSTALL_PREFIX "C:/prg/${PROJECT_NAME}")
+
+add_subdirectory(status_pipe)
+add_subdirectory(wc)
+add_subdirectory(md5sum)
+
+install(TARGETS
+  status_pipe
+  wc
+  feladat
+  md5sum
+RUNTIME DESTINATION .
+)

@@ -1,0 +1,4 @@
+add_executable(md5sum
+  md5.cc
+  md5sum.cc
+)

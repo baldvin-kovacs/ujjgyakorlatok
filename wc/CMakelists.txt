@@ -1,0 +1,7 @@
+add_executable(wc
+  wc.cc
+)
+
+add_executable(feladat
+  feladat.cc
+)
