@@ -5,3 +5,8 @@ add_executable(wc
 add_executable(feladat
   feladat.cc
 )
+
+install(
+  TARGETS wc feladat
+  RUNTIME DESTINATION wc
+)
