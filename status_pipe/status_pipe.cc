@@ -3,77 +3,58 @@
 #include <thread>
 #include <chrono>
 #include <cmath>
+#include <cstdio>
 
 #ifdef _WIN32
-#include <cstdio>
 #include <io.h>
 #include <fcntl.h>
-
-const size_t io_buffer_size = 4096;
-char stdout_buffer[4096];
-char stdin_buffer[4096];
 #endif
 
-class moving_average {
- public:
-    void add(double value) {
-        osszeg = value;
-        ++n;
-    }
-    double get() {
-        return osszeg / static_cast<double>(n);
-    }
- private:
-    double osszeg = 0.0;
-    int n = 0;
-};
+using std::chrono::high_resolution_clock;
 
-moving_average average;
+char stdout_buffer[4096];
+
 int num_bytes = 0;
-int num_seconds = 0;
-bool finished = false;
-std::mutex mu;
+int last_printed_num_bytes = 0;
+high_resolution_clock::time_point start_time;
+high_resolution_clock::time_point last_status_time;
 
 
 void print_status(bool force) {
-    const std::lock_guard<std::mutex> lock(mu);
-    if (finished && !force) return;
-    std::cerr << num_seconds << " " << num_bytes << " " << average.get() << std::endl;
-}
-
-void status_thread() {
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        {
-            const std::lock_guard<std::mutex> lock(mu);
-            ++num_seconds;
-            average.add(num_bytes);
+    high_resolution_clock::time_point now = high_resolution_clock::now();
+    if (!force) {
+        if (num_bytes < last_printed_num_bytes + sizeof stdout_buffer) {
+            return;
         }
-        print_status(false);
+        if (now - last_status_time < std::chrono::seconds(1)) {
+            return;
+        }
     }
+    last_status_time = now;
+    high_resolution_clock::duration elapsed_time = now - start_time;
+    double elapsed_seconds = double(std::chrono::nanoseconds(elapsed_time).count()) / double(1e9);
+    double avg = double(num_bytes) / elapsed_seconds;
+    std::cerr << elapsed_seconds << " " << num_bytes << " " << avg << std::endl;
 }
 
 int main() {
 #ifdef _WIN32
     _setmode(fileno(stdout), O_BINARY);
     _setmode(fileno(stdin), O_BINARY);
-    std::setvbuf(stdin, stdin_buffer, _IOFBF, io_buffer_size);
-    std::setvbuf(stdout, stdout_buffer, _IOFBF, io_buffer_size);
 #endif
+    std::setvbuf(stdout, stdout_buffer, _IOFBF, sizeof stdout_buffer);
 
-    std::thread szamolo(status_thread);
+    std::cin.tie(nullptr);
+    std::cout.sync_with_stdio(false);
 
-    char c;
-    while (std::cin.get(c)) {
-        {
-            const std::lock_guard<std::mutex> lock(mu);
-            num_bytes++;
-        }
-        std::cout << c;
-    }
-    {
-        const std::lock_guard<std::mutex> lock(mu);
-        finished = true;
+    char c[sizeof stdout_buffer];
+    last_status_time = start_time = high_resolution_clock::now();
+
+    while (std::cin.read(c, sizeof c)) {
+        std::streamsize count = std::cin.gcount();
+        num_bytes += count;
+        print_status(false);
+        if (!std::cout.write(c, count)) break;
     }
     print_status(true);
 }

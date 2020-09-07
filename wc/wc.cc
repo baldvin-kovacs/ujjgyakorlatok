@@ -1,19 +1,15 @@
 #include <iostream>
 #include <cctype>
+#include <cstdio>
 
 #ifdef _WIN32
-#include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
-
-const size_t io_buffer_size = 4096;
-char stdin_buffer[4096];
 #endif
 
 int main() {
 #ifdef _WIN32
     _setmode(fileno(stdin), O_BINARY);
-    std::setvbuf(stdin, stdin_buffer, _IOFBF, io_buffer_size);
 #endif
 
     int nl = 0, nw = 0, nc = 0;

@@ -7,7 +7,7 @@
 			"command": "cl.exe",
 			"args": [
 				"/O2",
-				//"/Zi",
+				"/Zi",
 				"/EHsc",
 				"/Fe:",
 				"${fileDirname}\\${fileBasenameNoExtension}.exe",

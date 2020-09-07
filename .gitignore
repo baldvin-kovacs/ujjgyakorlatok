@@ -1,3 +1,6 @@
 *.pdb
 *.obj
 *.exe
+*.ilk
+*.zip
+*.pdb
