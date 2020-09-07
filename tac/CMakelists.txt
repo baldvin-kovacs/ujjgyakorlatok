@@ -6,11 +6,14 @@ add_executable(tac_with_buf
   tac_with_buf.cc
 )
 
-add_executable(feladat
+add_executable(tac_feladat
   feladat.cc
 )
 
+set_target_properties(tac_feladat
+PROPERTIES OUTPUT_NAME feladat)
+
 install(
-  TARGETS tac tac_with_buf feladat
+  TARGETS tac tac_with_buf tac_feladat
   RUNTIME DESTINATION tac
 )
